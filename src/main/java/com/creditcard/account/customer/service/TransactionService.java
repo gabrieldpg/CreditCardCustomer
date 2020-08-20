@@ -22,15 +22,8 @@ public class TransactionService {
         return repository.findById(id);
     }
 
-    public Transaction create(Transaction transaction) {
+    public Transaction createOrUpdate(Transaction transaction) {
         return repository.save(transaction);
-    }
-
-    public Transaction update(Transaction transaction, Transaction updates) {
-        Transaction updatedTransaction = transaction;
-        /*updatedCustomer.setFirstName(updates.getFirstName());
-        updatedCustomer.setLastName(updates.getLastName());*/
-        return repository.save(updatedTransaction);
     }
 
     public void deleteById(Long id) {

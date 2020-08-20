@@ -1,6 +1,7 @@
 package com.creditcard.account.customer.controller;
 
 import com.creditcard.account.customer.model.Customer;
+import com.creditcard.account.customer.model.Transaction;
 import com.creditcard.account.customer.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +35,25 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<Customer> create(@Valid Customer customer) {
-        return ResponseEntity.ok(service.create(customer));
+        return ResponseEntity.ok(service.createOrUpdate(customer));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> update(@PathVariable Long id, @Valid Customer updates) {
+    public ResponseEntity<Customer> update(@PathVariable Long id, @Valid Customer updatedCustomer) {
         Optional<Customer> customer = service.getById(id);
         if (!customer.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(service.update(customer.get(), updates));
+        return ResponseEntity.ok(service.createOrUpdate(updatedCustomer));
+    }
+
+    @PutMapping("/{id}/add_transaction")
+    public ResponseEntity<Customer> addTransaction(@PathVariable Long id, @Valid Transaction transaction) {
+        Optional<Customer> customer = service.getById(id);
+        if (!customer.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(service.addTransaction(customer.get(), transaction));
     }
 
     @DeleteMapping("/{id}")

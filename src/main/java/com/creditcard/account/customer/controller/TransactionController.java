@@ -34,16 +34,16 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<Transaction> create(@Valid Transaction transaction) {
-        return ResponseEntity.ok(service.create(transaction));
+        return ResponseEntity.ok(service.createOrUpdate(transaction));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Transaction> update(@PathVariable Long id, @Valid Transaction updates) {
+    public ResponseEntity<Transaction> update(@PathVariable Long id, @Valid Transaction updatedTransaction) {
         Optional<Transaction> transaction = service.getById(id);
         if (!transaction.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(service.update(transaction.get(), updates));
+        return ResponseEntity.ok(service.createOrUpdate(updatedTransaction));
     }
 
     @DeleteMapping("/{id}")
