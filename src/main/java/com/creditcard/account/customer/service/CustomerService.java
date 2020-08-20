@@ -37,8 +37,4 @@ public class CustomerService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
-
-    private boolean validate(@Valid Customer customer) {
-        return true;
-    }
 }

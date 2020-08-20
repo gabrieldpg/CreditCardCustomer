@@ -7,10 +7,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Entity
@@ -22,13 +21,42 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Must have First Name")
-    @Size(min = 2, max = 26, message = "First Name must be 2 to 26 digits long")
+    @NotBlank
+    @Size(min = 2, max = 26)
     private String firstName;
 
-    @NotBlank(message = "Must have Last Name")
-    @Size(min = 2, max = 26, message = "Last Name must be 2 to 26 digits long")
+    @NotBlank
+    @Size(min = 2, max = 26)
     private String lastName;
+
+    @NotBlank
+    @Past
+    private Date dateOfBirth;
+
+    @NotBlank
+    @PositiveOrZero
+    private int cardLimit;
+
+    @NotBlank
+    private int balance;
+
+    @NotBlank
+    private int available;
+
+    @NotBlank
+    @PositiveOrZero
+    private int dueRemaining;
+
+    @NotBlank
+    @FutureOrPresent
+    private Date nextStatement;
+
+    @NotBlank
+    @FutureOrPresent
+    private Date nextDueDate;
+
+    @ElementCollection
+    private List<Transaction> transactions;
 
     @CreationTimestamp
     private Date createdAt;

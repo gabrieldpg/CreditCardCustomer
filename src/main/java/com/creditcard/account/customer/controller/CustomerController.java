@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/creditcard/account/customer")
+@RequestMapping("/creditcard/account")
 @Slf4j
 public class CustomerController {
 
