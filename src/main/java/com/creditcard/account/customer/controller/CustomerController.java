@@ -1,5 +1,7 @@
-package com.creditcard.account.customer;
+package com.creditcard.account.customer.controller;
 
+import com.creditcard.account.customer.model.Customer;
+import com.creditcard.account.customer.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +20,13 @@ public class CustomerController {
     private CustomerService service;
 
     @GetMapping
-    public List<CustomerModel> getAll() {
+    public List<Customer> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerModel> getById(@PathVariable Long id) {
-        Optional<CustomerModel> customer = service.getById(id);
+    public ResponseEntity<Customer> getById(@PathVariable Long id) {
+        Optional<Customer> customer = service.getById(id);
         if (!customer.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -32,13 +34,13 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerModel> create(@Validated CustomerModel customer) {
+    public ResponseEntity<Customer> create(@Validated Customer customer) {
         return ResponseEntity.ok(service.createOrUpdate(customer));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerModel> update(@PathVariable Long id, @Validated CustomerModel customer) {
-        Optional<CustomerModel> updatedCustomer = service.getById(id);
+    public ResponseEntity<Customer> update(@PathVariable Long id, @Validated Customer customer) {
+        Optional<Customer> updatedCustomer = service.getById(id);
         if (!updatedCustomer.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -49,7 +51,7 @@ public class CustomerController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteById(@PathVariable Long id) {
-        Optional<CustomerModel> customer = service.getById(id);
+        Optional<Customer> customer = service.getById(id);
         if (!customer.isPresent()) {
             return ResponseEntity.notFound().build();
         }

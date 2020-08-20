@@ -1,4 +1,4 @@
-package com.creditcard.account.customer;
+package com.creditcard.account.customer.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.Date;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class CustomerModel {
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
