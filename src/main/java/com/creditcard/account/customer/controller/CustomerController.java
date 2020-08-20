@@ -1,7 +1,6 @@
 package com.creditcard.account.customer.controller;
 
 import com.creditcard.account.customer.model.Customer;
-import com.creditcard.account.customer.model.Transaction;
 import com.creditcard.account.customer.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/creditcard/account")
+@RequestMapping("/creditcard/account/customer")
 @Slf4j
 public class CustomerController {
 
@@ -45,15 +44,6 @@ public class CustomerController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(service.createOrUpdate(updatedCustomer));
-    }
-
-    @PutMapping("/{id}/add_transaction")
-    public ResponseEntity<Customer> addTransaction(@PathVariable Long id, @Valid Transaction transaction) {
-        Optional<Customer> customer = service.getById(id);
-        if (!customer.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(service.addTransaction(customer.get(), transaction));
     }
 
     @DeleteMapping("/{id}")

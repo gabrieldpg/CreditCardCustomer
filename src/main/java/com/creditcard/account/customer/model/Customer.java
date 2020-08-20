@@ -5,11 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Entity
@@ -29,38 +30,42 @@ public class Customer {
     @Size(min = 2, max = 26)
     private String lastName;
 
-    @NotBlank
+    @NotNull
     @Past
-    private Date dateOfBirth;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dateOfBirth;
 
-    @NotBlank
+    @NotNull
     @PositiveOrZero
-    private int cardLimit;
+    private double cardLimit;
 
-    @NotBlank
-    private int balance;
+    @NotNull
+    private double balance;
 
-    @NotBlank
-    private int available;
+    private double available;
 
-    @NotBlank
+    @NotNull
     @PositiveOrZero
-    private int dueRemaining;
+    private double dueRemaining;
 
-    @NotBlank
+    @NotNull
     @FutureOrPresent
-    private Date nextStatement;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate nextStatement;
 
-    @NotBlank
+    @NotNull
     @FutureOrPresent
-    private Date nextDueDate;
-
-    @ElementCollection
-    private List<Transaction> transactions;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate nextDueDate;
 
     @CreationTimestamp
     private Date createdAt;
 
     @UpdateTimestamp
     private Date updatedAt;
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+        this.available = this.cardLimit - balance;
+    }
 }
