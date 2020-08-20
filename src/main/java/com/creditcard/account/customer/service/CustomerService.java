@@ -5,6 +5,7 @@ import com.creditcard.account.customer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,11 +23,22 @@ public class CustomerService {
         return repository.findById(id);
     }
 
-    public Customer createOrUpdate(Customer customer) {
+    public Customer create(Customer customer) {
         return repository.save(customer);
+    }
+
+    public Customer update(Customer customer, Customer updates) {
+        Customer updatedCustomer = customer;
+        updatedCustomer.setFirstName(updates.getFirstName());
+        updatedCustomer.setLastName(updates.getLastName());
+        return repository.save(updatedCustomer);
     }
 
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    private boolean validate(@Valid Customer customer) {
+        return true;
     }
 }

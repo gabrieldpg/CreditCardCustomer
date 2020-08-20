@@ -5,10 +5,9 @@ import com.creditcard.account.customer.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -20,8 +19,8 @@ public class CustomerController {
     private CustomerService service;
 
     @GetMapping
-    public List<Customer> getAll() {
-        return service.getAll();
+    public ResponseEntity getAll() {
+        return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/{id}")
@@ -34,19 +33,17 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<Customer> create(@Validated Customer customer) {
-        return ResponseEntity.ok(service.createOrUpdate(customer));
+    public ResponseEntity<Customer> create(@Valid Customer customer) {
+        return ResponseEntity.ok(service.create(customer));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Customer> update(@PathVariable Long id, @Validated Customer customer) {
-        Optional<Customer> updatedCustomer = service.getById(id);
-        if (!updatedCustomer.isPresent()) {
+    public ResponseEntity<Customer> update(@PathVariable Long id, @Valid Customer updates) {
+        Optional<Customer> customer = service.getById(id);
+        if (!customer.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        updatedCustomer.get().setFirstName(customer.getFirstName());
-        updatedCustomer.get().setLastName(customer.getLastName());
-        return ResponseEntity.ok(service.createOrUpdate(updatedCustomer.get()));
+        return ResponseEntity.ok(service.update(customer.get(), updates));
     }
 
     @DeleteMapping("/{id}")
